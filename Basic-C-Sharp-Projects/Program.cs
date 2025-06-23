@@ -1,44 +1,53 @@
 using System;
 
-namespace MathOperationApp
+namespace InterfacePolymorphismApp
 {
-    // This is our custom class where we'll define the method
-    class MyMathClass
+    // STEP 1: Define the interface named IQuittable
+    // It declares a void method called Quit
+    public interface IQuittable
     {
-        // This is a void method named DoMath
-        // It takes two integer parameters: num1 and num2
-        public void DoMath(int num1, int num2)
+        void Quit(); // No implementation here; it's just a contract
+    }
+
+    // STEP 2: Define the Employee class
+    // It inherits from IQuittable, meaning it must implement Quit()
+    public class Employee : IQuittable
+    {
+        // Some example properties of Employee
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        // Constructor to initialize the employee
+        public Employee(string firstName, string lastName)
         {
-            // Perform a math operation on the first integer (e.g., multiply by 2)
-            int result = num1 * 2;
+            FirstName = firstName;
+            LastName = lastName;
+        }
 
-            // Display the result of the operation
-            Console.WriteLine($"Result of the math operation on the first number ({num1} * 2): {result}");
-
-            // Display the second integer as requested
-            Console.WriteLine($"The second number is: {num2}");
+        // STEP 3: Implement the Quit method from IQuittable
+        public void Quit()
+        {
+            // Display a custom quit message
+            Console.WriteLine($"{FirstName} {LastName} has quit the company.");
         }
     }
 
-    // The main entry point of the console app
+    // Main program entry point
     class Program
     {
         static void Main(string[] args)
         {
-            // Instantiate the MyMathClass
-            MyMathClass mathObject = new MyMathClass();
+            // STEP 4: Create an Employee object
+            Employee emp = new Employee("John", "Doe");
 
-            // Call the DoMath method using positional arguments
-            Console.WriteLine("Calling DoMath with positional arguments:");
-            mathObject.DoMath(5, 10); // 5 will be doubled, 10 will be displayed
+            // STEP 5: Use polymorphism
+            // Create an object of type IQuittable and assign the Employee instance to it
+            IQuittable quittableEmployee = emp;
 
-            Console.WriteLine(); // Add a blank line for clarity
+            // STEP 6: Call the Quit method using the interface type reference
+            quittableEmployee.Quit();
 
-            // Call the DoMath method using named arguments
-            Console.WriteLine("Calling DoMath with named arguments:");
-            mathObject.DoMath(num2: 20, num1: 7); // 7 will be doubled, 20 will be displayed
-
-            // Wait for user input before closing
+            // Pause before closing
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
         }
