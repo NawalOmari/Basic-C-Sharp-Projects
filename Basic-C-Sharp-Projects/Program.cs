@@ -1,53 +1,96 @@
 using System;
 
-namespace InterfacePolymorphismApp
+namespace EmployeeComparisonApp
 {
-    // STEP 1: Define the interface named IQuittable
-    // It declares a void method called Quit
-    public interface IQuittable
+    // STEP 1: Define the Employee class
+    public class Employee
     {
-        void Quit(); // No implementation here; it's just a contract
-    }
-
-    // STEP 2: Define the Employee class
-    // It inherits from IQuittable, meaning it must implement Quit()
-    public class Employee : IQuittable
-    {
-        // Some example properties of Employee
+        // Properties to store basic employee details
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        // Constructor to initialize the employee
-        public Employee(string firstName, string lastName)
+        // STEP 2: Overload the '==' operator to compare Employee objects by Id
+        public static bool operator ==(Employee emp1, Employee emp2)
         {
-            FirstName = firstName;
-            LastName = lastName;
+            // If both are null, they are equal
+            if (ReferenceEquals(emp1, emp2))
+                return true;
+
+            // If one is null, they are not equal
+            if (emp1 is null || emp2 is null)
+                return false;
+
+            // Compare their Id properties
+            return emp1.Id == emp2.Id;
         }
 
-        // STEP 3: Implement the Quit method from IQuittable
-        public void Quit()
+        // STEP 3: Overload the '!=' operator (must be done in a pair with '==')
+        public static bool operator !=(Employee emp1, Employee emp2)
         {
-            // Display a custom quit message
-            Console.WriteLine($"{FirstName} {LastName} has quit the company.");
+            // Use the previously defined '==' operator and negate the result
+            return !(emp1 == emp2);
+        }
+
+        // STEP 4: Override Equals and GetHashCode for completeness and compiler warning suppression
+        public override bool Equals(object obj)
+        {
+            // Check if the object is an Employee and compare Ids
+            if (obj is Employee emp)
+            {
+                return this.Id == emp.Id;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
     }
 
-    // Main program entry point
+    // STEP 5: Program entry point
     class Program
     {
         static void Main(string[] args)
         {
-            // STEP 4: Create an Employee object
-            Employee emp = new Employee("John", "Doe");
+            // Create the first Employee object and assign values
+            Employee employee1 = new Employee
+            {
+                Id = 101,
+                FirstName = "Alice",
+                LastName = "Smith"
+            };
 
-            // STEP 5: Use polymorphism
-            // Create an object of type IQuittable and assign the Employee instance to it
-            IQuittable quittableEmployee = emp;
+            // Create the second Employee object with different or same Id
+            Employee employee2 = new Employee
+            {
+                Id = 101, // Try changing to a different number to test '!='
+                FirstName = "Bob",
+                LastName = "Johnson"
+            };
 
-            // STEP 6: Call the Quit method using the interface type reference
-            quittableEmployee.Quit();
+            // STEP 6: Compare the two employee objects using the overloaded '==' operator
+            if (employee1 == employee2)
+            {
+                Console.WriteLine("Employee 1 and Employee 2 are considered equal (same Id).");
+            }
+            else
+            {
+                Console.WriteLine("Employee 1 and Employee 2 are NOT equal (different Ids).");
+            }
 
-            // Pause before closing
+            // STEP 7: Also demonstrate the '!=' operator
+            if (employee1 != employee2)
+            {
+                Console.WriteLine("Employee 1 and Employee 2 are different based on Id.");
+            }
+            else
+            {
+                Console.WriteLine("Employee 1 and Employee 2 are the same based on Id.");
+            }
+
+            // Pause to see output
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
         }
