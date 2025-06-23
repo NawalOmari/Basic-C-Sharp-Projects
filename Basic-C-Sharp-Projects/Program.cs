@@ -1,50 +1,40 @@
 using System;
 
-class Program
+namespace AppendTextToArray
 {
-    static void Main()
+    class Program
     {
-        // Display welcome message
-        Console.WriteLine("Welcome to Package Express. Please follow the instructions below.");
-
-        // Prompt the user to enter package weight
-        Console.Write("Please enter the package weight: ");
-        double weight = Convert.ToDouble(Console.ReadLine());
-
-        // Check if weight exceeds the allowed limit
-        if (weight > 50)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Package too heavy to be shipped via Package Express. Have a good day.");
-            return; // Exit the program
+            // Assignment 1
+            // Step 1: Declare and initialize a one-dimensional array of strings
+            // This array can represent any kind of base text, here we use example greetings
+            string[] messages = { "Hello", "Welcome", "Good day", "Hi", "Greetings" };
+
+            // Step 2: Ask the user to input some text
+            Console.WriteLine("Please enter some text to append to each message:");
+            string userInput = Console.ReadLine(); // Read user input from the console
+
+            // Step 3: Use a loop to iterate through each element in the array
+            // and append the user's input to the end of each string
+            for (int i = 0; i < messages.Length; i++)
+            {
+                // Append the userInput to the current message
+                messages[i] += " " + userInput; // Add a space between message and input
+                // This step updates the array but does NOT output anything yet
+            }
+
+            // Step 4: Create a second loop to print each modified string in the array
+            Console.WriteLine("\nUpdated messages:");
+            foreach (string message in messages)
+            {
+                // Output each updated message one at a time
+                Console.WriteLine(message);
+            }
+
+            // Pause the console so the user can see the output
+            Console.WriteLine("\nPress any key to exit...");
+            Console.ReadKey();
         }
-
-        // Prompt for package width
-        Console.Write("Please enter the package width: ");
-        double width = Convert.ToDouble(Console.ReadLine());
-
-        // Prompt for package height
-        Console.Write("Please enter the package height: ");
-        double height = Convert.ToDouble(Console.ReadLine());
-
-        // Prompt for package length
-        Console.Write("Please enter the package length: ");
-        double length = Convert.ToDouble(Console.ReadLine());
-
-        // Calculate total dimensions
-        double dimensionTotal = width + height + length;
-
-        // Check if dimension total exceeds the limit
-        if (dimensionTotal > 50)
-        {
-            Console.WriteLine("Package too big to be shipped via Package Express.");
-            return; // Exit the program
-        }
-
-        // Calculate the quote: (Width * Height * Length * Weight) / 100
-        double quote = (width * height * length * weight) / 100;
-
-        // Display the final quote formatted as currency
-        Console.WriteLine("Your estimated total for shipping this package is: $" + quote.ToString("F2"));
-        Console.WriteLine("Thank you!");
     }
 }
